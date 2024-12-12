@@ -1,0 +1,23 @@
+{
+    // CarpenterShop
+    "CarpenterShop.FirstBluePrint.Name": "Big Greenhouse",
+    "CarpenterShop.SecondBluePrint.Name": "Deluxe Greenhouse",
+    "CarpenterShop.FirstBluePrint.Description": "Greenhouse expanded to 15x15",
+    "CarpenterShop.SecondBluePrint.Description": "Greenhouse expanded to 21x21",
+    // Mod Configuration
+    "Config.FirstUpgrade.Name": "Big Greenhouse",
+    "Config.SecondUpgrade.Name": "Deluxe Greenhouse",
+    "Config.GoldCost": "Gold amount",
+    "Config.FirstSlot.Material": "Select material slot 1",
+    "Config.FirstSlot.Quantity": "Quantity",
+    "Config.SecondSlot.Material": "Select material slot 2",
+    "Config.SecondSlot.Quantity": "Quantity",
+    "Config.ThirdSlot.Material": "Select material slot 3",
+    "Config.ThirdSlot.Quantity": "Quantity",
+    "Config.BuildDays.Label": "Build days",
+    "Config.BuildDays.Description": "How many days is going to last the construction.",
+    "Config.BuildDays.Tooltop": "If 0, texture will reload next day.",
+    // Custom textures
+    "Config.UseCustomTextures.Label": "Use Custom Texture",
+    "Config.UseCustomTextures.Description": "If enabled, the mod will use the custom Greenhouse textures included."
+}
