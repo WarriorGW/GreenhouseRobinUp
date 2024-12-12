@@ -1,12 +1,30 @@
 ﻿using GreenhouseRobinUp;
 using GreenhouseRobinUp.APIs;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley.Buildings;
+using StardewValley;
 using TheWarriorGW.GreenhouseRobinUp.Data;
 
 namespace TheWarriorGW.GreenhouseRobinUp
 {
     partial class ModEntry
     {
+        private void ReloadGreenhouseAssets()
+        {
+            var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
+            if (gh != null)
+            {
+                int level = GetUpgradeLevel(gh);
+
+                // Aquí se establece la nueva textura dependiendo de la configuración
+                if (level > 0 && level <= 2)
+                {
+                    // Asegúrate de que el path sea correcto
+                    gh.GetData().Texture = Config.UseCustomGH ? $"Buildings/GreenhouseUp{level}" : "Buildings/Greenhouse";
+                    gh.resetTexture();
+                }
+            }
+        }
         private void LoadModConfigMenu()
         {
             // API GenericModConfig
@@ -20,14 +38,9 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 save: () =>
                 {
                     this.Helper.WriteConfig(this.Config);
-                    
+
+                    ReloadGreenhouseAssets();
                     Helper.GameContent.InvalidateCache("Data/Buildings");
-                    Helper.GameContent.InvalidateCache("Buildings/Greenhouse");
-                    Helper.GameContent.InvalidateCache("Buildings/GreenhouseUp1");
-                    Helper.GameContent.InvalidateCache("Buildings/GreenhouseUp2");
-                    Helper.GameContent.Load<Texture2D>("Buildings/Greenhouse");
-                    Helper.GameContent.Load<Texture2D>("Buildings/GreenhouseUp1");
-                    Helper.GameContent.Load<Texture2D>("Buildings/GreenhouseUp2");
                 }
             );
             // First Upgrade

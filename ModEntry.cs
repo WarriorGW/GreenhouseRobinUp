@@ -42,6 +42,7 @@ namespace TheWarriorGW.GreenhouseRobinUp
             helper.Events.Display.MenuChanged += OnMenuChanged;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.Content.AssetRequested += OnAssetRequested;
+            helper.Events.Display.RenderedWorld += OnRenderedWorld;
 
             //Set de condition for the upgrade
             GameStateQuery.Register("GreenhouseRobinUp.BuildCondition", CheckForUpgrade);
@@ -85,6 +86,28 @@ namespace TheWarriorGW.GreenhouseRobinUp
             return true;
         }
 
+        private int frameCounter = 0;
+        private const int logFrequency = 600; // Número de cuadros entre logs (~5 segundos a 60 FPS)
+
+        private void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
+        {
+            frameCounter++;
+            if (frameCounter >= logFrequency && Game1.currentLocation is Farm farm)
+            {
+                foreach (var building in farm.buildings)
+                {
+                    if (building is GreenhouseBuilding greenhouse)
+                    {
+                        Console.WriteLine($"Greenhouse found at position: {greenhouse.tileX}, {greenhouse.tileY}");
+                        Console.WriteLine($"Upgrade level: {GetUpgradeLevel(greenhouse)}");
+                        Console.WriteLine($"Building type: {greenhouse.buildingType.Value}");
+                    }
+                }
+                Console.WriteLine($"Current location: {Game1.currentLocation.Name}");
+                frameCounter = 0; // Reinicia el contador
+            }
+        }
+
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
             if (Context.IsWorldReady && e.Name.IsEquivalentTo("Maps/Greenhouse"))
@@ -98,73 +121,24 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 }
             }
 
-            //if (Context.IsWorldReady && e.Name.IsEquivalentTo("Buildings/Greenhouse") && Config.UseCustomGH)
-            //{
-            //    var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
-            //    int level = GetUpgradeLevel(gh);
+            if (e.Name.StartsWith("Buildings/Greenhouse"))
+            {
+                Console.WriteLine($"Asset requested: {e.Name}");
+            }
 
-            //    Console.WriteLine($"Greenhouse requested, now level: {level}");
-
-            //    if (level > 0 && level <= 2)
-            //    {
-            //        e.LoadFromModFile<Texture2D>($"assets/CustomGH_{GetUpgradeLevel(gh)}.png", AssetLoadPriority.Medium);
-            //    }
-            //};
-
-            //if (e.Name.IsEquivalentTo("Buildings/GreenhouseUp1") || e.Name.IsEquivalentTo("Buildings/GreenhouseUp2") || e.Name.IsEquivalentTo("Buildings/Greenhouse") && Config.UseCustomGH && Context.IsWorldReady)
-            //{
-            //    var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
-            //    int level = GetUpgradeLevel(gh);
-            //    if (level > 0 && level <= 2)
-            //    {
-            //        Console.WriteLine($"Se pidio CustomGH{level}, siguiente {level + 1}");
-            //        e.LoadFromModFile<Texture2D>($"assets/CustomGH_{level}.png", AssetLoadPriority.Medium);
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine($"Se pidio Greenhouse normal");
-            //        //e.LoadFrom(() => this.Helper.GameContent.Load<Texture2D>("Buildings/Greenhouse"), AssetLoadPriority.Medium);
-            //    }
-            //}
-
-            //if (Context.IsWorldReady)
-            //{
             if (e.Name.IsEquivalentTo("Buildings/GreenhouseUp1"))
             {
-                if (Config.UseCustomGH)
-                {
-                    e.LoadFromModFile<Texture2D>("assets/CustomGH_1.png", AssetLoadPriority.Medium);
-                }
-                else
-                {
-                    e.LoadFrom(() => this.Helper.GameContent.Load<Texture2D>("Buildings/Greenhouse"), AssetLoadPriority.Medium);
-                }
-                Console.WriteLine("Buildings/GreenhouseUp1 requested");
+                Console.WriteLine("Loading CustomGH_1");
+                e.LoadFromModFile<Texture2D>("assets/CustomGH_1.png", AssetLoadPriority.Medium);
+
             }
+
             if (e.Name.IsEquivalentTo("Buildings/GreenhouseUp2"))
             {
-                if (Config.UseCustomGH)
-                {
-                    e.LoadFromModFile<Texture2D>("assets/CustomGH_2.png", AssetLoadPriority.Medium);
-                }
-                else
-                {
-                    e.LoadFrom(() => this.Helper.GameContent.Load<Texture2D>("Buildings/Greenhouse"), AssetLoadPriority.Medium);
-                }
-                Console.WriteLine("Buildings/GreenhouseUp2 requested");
+                Console.WriteLine("Loading CustomGH_2");
+                e.LoadFromModFile<Texture2D>("assets/CustomGH_2.png", AssetLoadPriority.Medium);
             }
-            //if (e.Name.IsEquivalentTo("Buildings/Greenhouse"))
-            //{
-            //    Console.WriteLine("Buildings/Greenhouse requested");
-            //    e.LoadFrom(() => Game1.content.Load<Texture2D>("Buildings/Greenhouse"), AssetLoadPriority.Medium);
-            //}
-            //}
 
-            //if (Config.UseCustomGH)
-            //{
-            //    if(e.Name.IsEquivalentTo("Buildings/GreenhouseUp1")) e.LoadFromModFile<Texture2D>("assets/CustomGH_1.png", AssetLoadPriority.Medium);
-            //    if(e.Name.IsEquivalentTo("Buildings/GreenhouseUp2")) e.LoadFromModFile<Texture2D>("assets/CustomGH_2.png", AssetLoadPriority.Medium);
-            //}
 
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Buildings"))
             {
