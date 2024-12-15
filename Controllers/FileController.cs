@@ -15,8 +15,11 @@ namespace TheWarriorGW.GreenhouseRobinUp
         internal void OnSaveCompleted(object sender, SavedEventArgs e)
         {
             Monitor.Log("Invalidating Texture Cache after save");
+
             //Helper.GameContent.InvalidateCache("Maps/Greenhouse");
             //if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/Greenhouse");
+
+            //TODO: Poner un segmento que permita recargar los datos de la Greenhouse
         }
     }
 }

@@ -11,6 +11,10 @@
         {
             "UniqueID": "Pathoschild.ContentPatcher",
             "IsRequired": true
+        },
+        {
+            "UniqueID": "TheWarriorGW.GreenhouseRobinUpCP",
+            "IsRequired": true
         }
     ]
 }

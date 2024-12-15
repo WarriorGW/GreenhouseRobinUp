@@ -11,10 +11,6 @@ namespace TheWarriorGW.GreenhouseRobinUp
             var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
             gh.modData[ModDataKey] = args[0];
 
-            Helper.GameContent.InvalidateCache("Maps/Greenhouse");
-            if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/Greenhouse");
-            if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/CustomGH1");
-            if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/CustomGH2");
 
             Monitor.Log($"Greenhouse is now level {args[0]}.", LogLevel.Info);
 
@@ -26,13 +22,26 @@ namespace TheWarriorGW.GreenhouseRobinUp
             Monitor.Log($"Greenhouse level {GetUpgradeLevel(gh)}.", LogLevel.Info);
         }
 
-        private void CleanGH(string command, string[] args)
+        private void ReloadGH(string command, string[] args)
         {
-            Helper.GameContent.InvalidateCache("Maps/Greenhouse");
-            if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/Greenhouse");
-            if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/CustomGH1");
-            if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/CustomGH2");
-            Monitor.Log($"Cache cleaned", LogLevel.Info);
+            if (!Context.IsWorldReady) return;
+            //Helper.GameContent.InvalidateCache("Maps/Greenhouse");
+            //if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/Greenhouse");
+            //if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/CustomGH1");
+            //if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/CustomGH2");
+            //var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
+            //if (gh == null) Console.WriteLine("No gh found");
+            //gh.ReloadBuildingData();
+            //Helper.GameContent.InvalidateCache("Maps/Greenhouse");
+            //Helper.GameContent.InvalidateCache("Maps/GreenhouseUp1");
+            //Helper.GameContent.InvalidateCache("Maps/GreenhouseUp2");
+            
+            Monitor.Log($"Reloaded", LogLevel.Info);
+        }
+
+        private void PrintGH(string command, string[] args)
+        {
+            VerifyGreenhouseUpgrades();
         }
     }
 }

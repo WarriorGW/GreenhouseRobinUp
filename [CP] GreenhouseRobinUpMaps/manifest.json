@@ -1,0 +1,11 @@
+{
+    "Name": "[CP] GreenhouseRobinUp",
+    "Author": "TheWarriorGW",
+    "Version": "1.0.0",
+    "Description": "Assets for the Greenhouse Robin Upgrades.",
+    "UniqueID": "TheWarriorGW.GreenhouseRobinUpCP",
+    "UpdateKeys": [], // when you release the mod, see https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Update_checks
+    "ContentPackFor": {
+        "UniqueID": "Pathoschild.ContentPatcher"
+    }
+}
