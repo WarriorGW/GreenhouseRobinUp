@@ -22,33 +22,6 @@ namespace TheWarriorGW.GreenhouseRobinUp
         private ModConfig Config;
         const string ModDataKey = "TheWarriorGW.GreenhouseRobinUp.GreenLevel";
 
-        public static int GetUpgradeLevel(GreenhouseBuilding greenhouse)
-        {
-            //return greenhouse.modData.TryGetValue(ModDataKey, out string level)
-            //   ? int.Parse(level)
-            //   : 0;
-            // Si modData contiene el valor de "GreenhouseRobinUp.GreenLevel"
-            if (greenhouse.modData.TryGetValue(ModDataKey, out string level))
-            {
-                if (int.TryParse(level, out int parsedLevel))
-                {
-                    Console.WriteLine($"Greenhouse level found in ModData from GetUpgradeLevel(): {parsedLevel}");
-                    return parsedLevel; // Retorna el valor correctamente parseado
-                }
-                else
-                {
-                    Console.WriteLine($"Invalid Greenhouse level in ModData: {level}. Returning default level 0.");
-                    return 0; // Si el valor no es un número válido, regresa el nivel por defecto (0)
-                }
-            }
-            else
-            {
-                // Si no existe el ModData, posiblemente la *Greenhouse* no ha sido actualizada, así que asignamos nivel 0.
-                Console.WriteLine("No Greenhouse level found in ModData. Returning default level 0.");
-                return 0;
-            }
-        }
-
         public override void Entry(IModHelper helper)
         {
             //set up for translations
@@ -62,14 +35,18 @@ namespace TheWarriorGW.GreenhouseRobinUp
             helper.ConsoleCommands.Add("printgh", "Prints the info of all Greenhouses.\n\nUsage: printgh", PrintGH);
 
             //Register Event Listeners
-            helper.Events.GameLoop.SaveLoaded += OnLoad;
-            helper.Events.GameLoop.Saved += OnSaveCompleted;
-            helper.Events.Display.MenuChanged += OnMenuChanged;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
             helper.Events.Content.AssetRequested += OnAssetRequested;
             helper.Events.Display.RenderedWorld += OnRenderedWorld;
 
-            helper.Events.Content.AssetReady += OnAssetReady;
+            // Checks to avoid Doubled Greenhouses
+            helper.Events.GameLoop.SaveLoaded += OnLoad;
+            helper.Events.GameLoop.Saved += OnSaveCompleted;
+            helper.Events.GameLoop.DayStarted += OnDayStarting;
+            helper.Events.GameLoop.DayEnding += OnDayEnding;
+            helper.Events.GameLoop.Saving += OnSaving;
+
             helper.Events.World.BuildingListChanged += OnBuildingListChanged;
             helper.Events.World.LocationListChanged += OnLocationListChanged;
 
@@ -77,30 +54,28 @@ namespace TheWarriorGW.GreenhouseRobinUp
             GameStateQuery.Register("GreenhouseRobinUp.BuildCondition", CheckForUpgrade);
         }
 
-        private void OnAssetReady(object sender, AssetReadyEventArgs e)
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            //// Verificar si el asset solicitado es 'Data/Buildings'
-            //if (e.NameWithoutLocale.IsEquivalentTo("Data/Buildings"))
-            //{
-            //    // Obtener los datos del asset como un diccionario
-            //    var buildingsData = Helper.GameContent.Load<>("Data/Buildings");
+            //Monitor.Log($"Loaded config: Build1={Config.UpgradeMaterials[1].Gold} {Config.UpgradeMaterials[1].Slot1.Quantity} {Config.UpgradeMaterials[1].Slot1.Quantity}", LogLevel.Info);
 
-            //    // Convertir el diccionario a JSON usando System.Text.Json
-            //    string json = JsonSerializer.Serialize(buildingsData, new JsonSerializerOptions { WriteIndented = true });
+            // API Content patcher
+            var api = Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
+            api?.RegisterToken(ModManifest, "GreenHouseLevel", () =>
+            {
+                if (Context.IsWorldReady)
+                {
+                    var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
+                    return new[] { GetUpgradeLevel(gh).ToString() };
+                }
+                else return new[] { "0" };
+            });
 
-            //    // Especificamos la ruta del archivo donde queremos guardar los datos
-            //    string filePath = Path.Combine(Helper.DirectoryPath, "BuildingsData.json");
+            api?.RegisterToken(ModManifest, "UseCustomGH", () =>
+            {
+                return new[] { Config.UseCustomGH.ToString() };
+            });
 
-            //    // Escribimos el JSON en el archivo
-            //    File.WriteAllText(filePath, json);
-
-            //    // Mensaje de depuración
-            //    Monitor.Log($"Los datos de 'Data/Buildings' se han guardado en {filePath}.", LogLevel.Info);
-            //}
-            //if (e.Name.IsEquivalentTo("Maps/GreenhouseUp1"))
-            //{
-            //    this.Data
-            //}
+            LoadModConfigMenu();
         }
 
         private void OnBuildingListChanged(object sender, BuildingListChangedEventArgs e)
@@ -129,27 +104,6 @@ namespace TheWarriorGW.GreenhouseRobinUp
             {
                 Monitor.Log($"{locs.Name} location removed", LogLevel.Info);
             }
-        }
-
-        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
-        {
-            //Monitor.Log($"Loaded config: Build1={Config.UpgradeMaterials[1].Gold} {Config.UpgradeMaterials[1].Slot1.Quantity} {Config.UpgradeMaterials[1].Slot1.Quantity}", LogLevel.Info);
-
-            // API Content patcher
-            var api = Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
-            api?.RegisterToken(ModManifest, "GreenHouseLevel", () =>
-            {
-                if (Context.IsWorldReady)
-                {
-                    var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
-                    return new[] { GetUpgradeLevel(gh).ToString() };
-                }
-                else return new[] { "0" };
-            });
-
-            //Game1.content.Load<Map>("Maps/GreenhouseUp1");
-            //Game1.content.Load<Map>("Maps/GreenhouseUp2");
-            LoadModConfigMenu();
         }
 
         internal bool CheckForUpgrade(string[] query, GameStateQueryContext context)
@@ -210,17 +164,17 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 Console.WriteLine($"Asset requested: {e.Name}");
             }
 
-            if (e.Name.IsEquivalentTo("Buildings/GreenhouseUp1"))
-            {
-                Console.WriteLine("Loading CustomGH_1");
-                e.LoadFromModFile<Texture2D>("assets/CustomGH_1.png", AssetLoadPriority.Medium);
-            }
+            //if (e.Name.IsEquivalentTo("Buildings/GreenhouseUp1"))
+            //{
+            //    Console.WriteLine("Loading CustomGH_1");
+            //    e.LoadFromModFile<Texture2D>("assets/CustomGH_1.png", AssetLoadPriority.Medium);
+            //}
 
-            if (e.Name.IsEquivalentTo("Buildings/GreenhouseUp2"))
-            {
-                Console.WriteLine("Loading CustomGH_2");
-                e.LoadFromModFile<Texture2D>("assets/CustomGH_2.png", AssetLoadPriority.Medium);
-            }
+            //if (e.Name.IsEquivalentTo("Buildings/GreenhouseUp2"))
+            //{
+            //    Console.WriteLine("Loading CustomGH_2");
+            //    e.LoadFromModFile<Texture2D>("assets/CustomGH_2.png", AssetLoadPriority.Medium);
+            //}
 
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Buildings"))
             {
@@ -229,7 +183,6 @@ namespace TheWarriorGW.GreenhouseRobinUp
                     AddGreenhouseUpgrades(data);
                 });
             }
-
         }
     }
 }

@@ -14,17 +14,20 @@ using StardewValley.GameData.Buildings;
 using TheWarriorGW.GreenhouseRobinUp.Data;
 using System.Text.Json;
 
-namespace GreenhouseRobinUp.Debug
+namespace GreenhouseRobinUp.ManualDebug
 {
     public class DataBuildingsDebug
     {
         private class GreenhouseUpgradeData
         {
             public string Name { get; set; }
+            public string Description { get; set; }
             public string Texture { get; set; }
+            public string BuildingType { get; set; }
             public string IndoorMap { get; set; }
             public string BuildCondition { get; set; }
             public string BuildingToUpgrade { get; set; }
+            public string NonInstanced { get; set; }
             public Dictionary<string, string> CustomFields { get; set; }
             public Dictionary<string, string> ModData { get; set; }
         }
@@ -42,10 +45,13 @@ namespace GreenhouseRobinUp.Debug
                 var serializableBuilding = new GreenhouseUpgradeData
                 {
                     Name = building.Name,
+                    Description = building.Description,
                     Texture = building.Texture,
+                    BuildingType = building.BuildingType,
                     IndoorMap = building.IndoorMap,
                     BuildCondition = building.BuildCondition,
                     BuildingToUpgrade = building.BuildingToUpgrade,
+                    NonInstanced = building.NonInstancedIndoorLocation,
                     CustomFields = building.CustomFields,
                     ModData = building.ModData
                 };

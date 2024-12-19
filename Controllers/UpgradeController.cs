@@ -5,7 +5,7 @@ using StardewValley.Buildings;
 using StardewValley;
 using StardewValley.GameData.Buildings;
 using TheWarriorGW.GreenhouseRobinUp.Data;
-using GreenhouseRobinUp.Debug;
+using GreenhouseRobinUp.ManualDebug;
 using Microsoft.Xna.Framework;
 
 namespace TheWarriorGW.GreenhouseRobinUp
@@ -31,10 +31,8 @@ namespace TheWarriorGW.GreenhouseRobinUp
                         Console.WriteLine($"Get map indoors: {greenhouse.GetIndoors().Name}");
                         Console.WriteLine($"Name map indoors: {greenhouse.GetIndoorsName()}");
                         Console.WriteLine($"Type map indoors: {greenhouse.GetIndoorsType()}");
-                        Console.WriteLine($"Actual map indoors: {greenhouse.GetData().IndoorMap}");
-                        Console.WriteLine(greenhouse.modData.TryGetValue(ModDataKey, out string level)
-                            ? $"Greenhouse level found in ModData: {level}"
-                            : "No Greenhouse level found in ModData.");
+                        //Console.WriteLine($"Actual map indoors: {greenhouse.GetData().IndoorMap}");
+                        Console.WriteLine($"{greenhouse.GetIndoors().warps}");
                         //Console.WriteLine($"Upgrade name: {greenhouse.upgradeName}");
                         //Console.WriteLine(Game1.getLocationFromName("Greenhouse").GetData().);
                         Console.WriteLine("#############################################");
@@ -67,11 +65,20 @@ namespace TheWarriorGW.GreenhouseRobinUp
 
             Monitor.Log("Adding Greenhouse upgrades...", LogLevel.Info);  // Log al inicio del método
 
-            BuildingData ghData = dict.Data["Greenhouse"];
-            ghData.ModData = new()
-            {
-                    { "TheWarriorGW.GreenhouseRobinUp.GreenLevel", "0" }
-            };
+            //BuildingData ghData = dict.Data["Greenhouse"];
+
+            //if (ghData.ModData[ModDataKey] == null)
+            //{
+            //    ghData.ModData = new()
+            //    {
+            //        { "TheWarriorGW.GreenhouseRobinUp.GreenLevel", "0" }
+            //    };
+            //}
+
+            //if (!ghData.ModData.ContainsKey(ModDataKey))
+            //{
+            //    ghData.ModData[ModDataKey] = "0";
+            //}
 
             for (int level = 1; level <= 2; level++)
             {
@@ -85,16 +92,18 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 upgradeData.Name = level == 1
                     ? I18n.CarpenterShop_FirstBluePrint_Name()
                     : I18n.CarpenterShop_SecondBluePrint_Name();
-                upgradeData.Texture = Config.UseCustomGH ? $"Buildings\\GreenhouseUp{level}" : "Buildings/Greenhouse";
-                upgradeData.SourceRect = new Rectangle(0, 160, 112, 160);
+                //upgradeData.Texture = Config.UseCustomGH ? $"Buildings\\GreenhouseUp{level}" : "Buildings/Greenhouse";
+                upgradeData.Texture = "Buildings/Greenhouse";
+                //upgradeData.SourceRect = new Rectangle(0, 160, 112, 160);
                 //upgradeData.IndoorMap = $"GreenhouseUp{level}";
-                upgradeData.NonInstancedIndoorLocation = $"GreenhouseRobinUp.GreenhouseUp{level}";
+                //upgradeData.NonInstancedIndoorLocation = $"GreenhouseRobinUp.GreenhouseUp{level}";
                 upgradeData.Description = level == 1
                     ? I18n.CarpenterShop_FirstBluePrint_Description()
                     : I18n.CarpenterShop_SecondBluePrint_Description();
                 upgradeData.Builder = "Robin";
                 upgradeData.BuildCondition = $"GreenhouseRobinUp.BuildCondition {level}";
-                upgradeData.BuildingToUpgrade = level == 1 ? "Greenhouse" : "Big Greenhouse";
+                //upgradeData.BuildingToUpgrade = level == 1 ? "Greenhouse" : "Big Greenhouse";
+                upgradeData.BuildingToUpgrade = "Greenhouse";
                 upgradeData.BuildCost = cost.Gold;
                 upgradeData.BuildDays = cost.BuildDays;
                 upgradeData.BuildMaterials = new List<BuildingMaterial>()
@@ -105,8 +114,6 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 };
 
                 Monitor.Log($"Setting ModData for level {level}...", LogLevel.Info); // Log la asignación de ModData
-                //upgradeData.CustomFields ??= new Dictionary<string, string>();
-                //upgradeData.CustomFields["GreenLevel"] = $"{level}";
 
                 // Establecer ModData
                 upgradeData.ModData = new()
@@ -115,7 +122,7 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 };
 
                 // Agregar al diccionario
-                dict.Data.Add(level == 1 ? $"Big Greenhouse" : "Deluxe Greenhouse", upgradeData);
+                dict.Data.Add($"GreenhouseRobinUp{level}", upgradeData);
 
                 //var dataBuildingsDebug = new DataBuildingsDebug();
                 //dataBuildingsDebug.DataBuildings(data, Helper);
