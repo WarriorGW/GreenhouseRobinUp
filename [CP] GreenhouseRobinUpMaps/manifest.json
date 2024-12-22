@@ -4,7 +4,7 @@
     "Version": "1.0.0",
     "Description": "Assets for the Greenhouse Robin Upgrades.",
     "UniqueID": "TheWarriorGW.GreenhouseRobinUpCP",
-    "UpdateKeys": [], // when you release the mod, see https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Update_checks
+    "UpdateKeys": [ "Nexus:30219" ],
     "ContentPackFor": {
         "UniqueID": "Pathoschild.ContentPatcher"
     },

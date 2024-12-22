@@ -6,7 +6,7 @@
     "UniqueID": "TheWarriorGW.GreenhouseRobinUp",
     "EntryDll": "GreenhouseRobinUp.dll",
     "MinimumApiVersion": "4.1.0",
-    "UpdateKeys": [],
+    "UpdateKeys": ["Nexus:30219"],
     "Dependencies": [
         {
             "UniqueID": "Pathoschild.ContentPatcher",
