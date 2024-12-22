@@ -35,7 +35,6 @@ namespace GreenhouseRobinUp.ManualDebug
         public void DataBuildings(IAssetData data, IModHelper Helper)
         {
             var buildingsData = data.AsDictionary<string, BuildingData>().Data;
-
             var relevantData = new Dictionary<string, GreenhouseUpgradeData>();
 
             foreach (var buildingEntry in buildingsData)
@@ -52,7 +51,6 @@ namespace GreenhouseRobinUp.ManualDebug
                     BuildCondition = building.BuildCondition,
                     BuildingToUpgrade = building.BuildingToUpgrade,
                     NonInstanced = building.NonInstancedIndoorLocation,
-                    CustomFields = building.CustomFields,
                     ModData = building.ModData
                 };
 

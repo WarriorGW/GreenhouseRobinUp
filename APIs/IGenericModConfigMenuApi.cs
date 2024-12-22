@@ -92,24 +92,6 @@ namespace GreenhouseRobinUp.APIs
         /// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
         void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string> tooltip = null, string[] allowedValues = null, Func<string, string> formatAllowedValue = null, string fieldId = null);
 
-        /// <summary>Add a key binding at the current position in the form.</summary>
-        /// <param name="mod">The mod's manifest.</param>
-        /// <param name="getValue">Get the current value from the mod config.</param>
-        /// <param name="setValue">Set a new value in the mod config.</param>
-        /// <param name="name">The label text to show in the form.</param>
-        /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
-        /// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
-        void AddKeybind(IManifest mod, Func<SButton> getValue, Action<SButton> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
-
-        /// <summary>Add a key binding list at the current position in the form.</summary>
-        /// <param name="mod">The mod's manifest.</param>
-        /// <param name="getValue">Get the current value from the mod config.</param>
-        /// <param name="setValue">Set a new value in the mod config.</param>
-        /// <param name="name">The label text to show in the form.</param>
-        /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
-        /// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
-        void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
-
 
         /****
         ** Multi-page management
@@ -159,10 +141,6 @@ namespace GreenhouseRobinUp.APIs
         /// <param name="onChange">The method to call with the option's unique field ID and new value.</param>
         /// <remarks>Options use a randomized ID by default; you'll likely want to specify the <c>fieldId</c> argument when adding options if you use this.</remarks>
         void OnFieldChanged(IManifest mod, Action<string, object> onChange);
-
-        /// <summary>Open the config UI for a specific mod.</summary>
-        /// <param name="mod">The mod's manifest.</param>
-        void OpenModMenu(IManifest mod);
 
         /// <summary>Open the config UI for a specific mod, as a child menu if there is an existing menu.</summary>
         /// <param name="mod">The mod's manifest.</param>

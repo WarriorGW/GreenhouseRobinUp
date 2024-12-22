@@ -8,11 +8,7 @@ namespace TheWarriorGW.GreenhouseRobinUp
     {
         private void SetGHLevel(string command, string[] args)
         {
-            var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
-            gh.modData[ModDataKey] = args[0];
-
-
-            Monitor.Log($"Greenhouse is now level {args[0]}.", LogLevel.Info);
+            SetUpgradeLevel(int.Parse(args[0]));
 
         }
         private void GetGHLevel(string command, string[] args)
@@ -25,17 +21,8 @@ namespace TheWarriorGW.GreenhouseRobinUp
         private void ReloadGH(string command, string[] args)
         {
             if (!Context.IsWorldReady) return;
-            //Helper.GameContent.InvalidateCache("Maps/Greenhouse");
-            //if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/Greenhouse");
-            //if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/CustomGH1");
-            //if (Config.UseCustomGH) Helper.GameContent.InvalidateCache("Buildings/CustomGH2");
-            //var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
-            //if (gh == null) Console.WriteLine("No gh found");
-            //gh.ReloadBuildingData();
-            //Helper.GameContent.InvalidateCache("Maps/Greenhouse");
-            //Helper.GameContent.InvalidateCache("Maps/GreenhouseUp1");
-            //Helper.GameContent.InvalidateCache("Maps/GreenhouseUp2");
-            
+            Helper.GameContent.InvalidateCache("Maps/Greenhouse");
+            Helper.GameContent.InvalidateCache("Maps/Greenhouse");
             Monitor.Log($"Reloaded", LogLevel.Info);
         }
 

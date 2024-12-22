@@ -1,6 +1,12 @@
 {
     // CarpenterShop
-    "CarpenterShop.BluePrintName": "Mejorar invernadero",
-    "CarpenterShop.FirstUpgradeDescription": "Espacio de 15x15 en Invernadero",
-    "CarpenterShop.SecondUpgradeDescription": "Espacio de 21x21 en Invernadero"
+    "CarpenterShop.BluePrint.Name": "Mejora del invernadero {{level}}",
+    "CarpenterShop.BluePrint.Description": "El invernadero ahora tendrá un tamaño de {{size}}",
+    // Mod Configuration
+    "Config.Upgrade.Name": "Mejora del invernadero {{level}}",
+    "Config.GoldCost": "Costo",
+    "Config.Slot.Material": "Selecciona el material {{number}}",
+    "Config.Slot.Quantity": "Cantidad",
+    "Config.BuildDays.Label": "Días de construcción",
+    "Config.BuildDays.Description": "Cuántos días tardará en completarse la construccion.\n(Mínimo 1)."
 }

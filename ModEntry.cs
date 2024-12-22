@@ -34,11 +34,9 @@ namespace TheWarriorGW.GreenhouseRobinUp
             helper.ConsoleCommands.Add("reloadgh", "Reloads Greenhouse data.\n\nUsage: reloadgh", ReloadGH);
             helper.ConsoleCommands.Add("printgh", "Prints the info of all Greenhouses.\n\nUsage: printgh", PrintGH);
 
-            //Register Event Listeners
+            // Loads basic data
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-            helper.Events.Display.MenuChanged += OnMenuChanged;
             helper.Events.Content.AssetRequested += OnAssetRequested;
-            helper.Events.Display.RenderedWorld += OnRenderedWorld;
 
             // Checks to avoid Doubled Greenhouses
             helper.Events.GameLoop.SaveLoaded += OnLoad;
@@ -56,8 +54,6 @@ namespace TheWarriorGW.GreenhouseRobinUp
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            //Monitor.Log($"Loaded config: Build1={Config.UpgradeMaterials[1].Gold} {Config.UpgradeMaterials[1].Slot1.Quantity} {Config.UpgradeMaterials[1].Slot1.Quantity}", LogLevel.Info);
-
             // API Content patcher
             var api = Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
             api?.RegisterToken(ModManifest, "GreenHouseLevel", () =>
@@ -68,11 +64,6 @@ namespace TheWarriorGW.GreenhouseRobinUp
                     return new[] { GetUpgradeLevel(gh).ToString() };
                 }
                 else return new[] { "0" };
-            });
-
-            api?.RegisterToken(ModManifest, "UseCustomGH", () =>
-            {
-                return new[] { Config.UseCustomGH.ToString() };
             });
 
             LoadModConfigMenu();
@@ -124,58 +115,8 @@ namespace TheWarriorGW.GreenhouseRobinUp
             return true;
         }
 
-        //private int frameCounter = 0;
-        //private const int logFrequency = 600; // Número de cuadros entre logs
-
-        private void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
-        {
-            //frameCounter++;
-            //if (frameCounter >= logFrequency)
-            //{
-            //    VerifyGreenhouseUpgrades();
-            //    frameCounter = 0; // Reinicia el contador
-            //}
-        }
-
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            if (e.NameWithoutLocale.IsEquivalentTo("Data/Locations"))
-            {
-                Console.WriteLine($"Asset requested: {e.Name}");
-                e.Edit(asset =>
-                {
-                    var dict = asset.AsDictionary<string, LocationData>();
-                    foreach (var locationEntry in dict.Data)
-                    {
-                        var locationName = locationEntry.Key; // Nombre de la ubicación (ID)
-                        var location = locationEntry.Value; // Objeto de la ubicación
-                        if (locationName.Contains("Greenhouse"))
-                        {
-                            Console.WriteLine($"Location ID: {locationName}");
-                            Console.WriteLine($"DisplayName: {location.DisplayName}");
-                            Console.WriteLine($"MapPath: {location.CreateOnLoad?.MapPath}");
-                        }
-                    }
-                });
-            }
-
-            if (e.Name.StartsWith("Buildings/G") || e.Name.StartsWith("Maps/G") || e.Name.StartsWith("Data/B"))
-            {
-                Console.WriteLine($"Asset requested: {e.Name}");
-            }
-
-            //if (e.Name.IsEquivalentTo("Buildings/GreenhouseUp1"))
-            //{
-            //    Console.WriteLine("Loading CustomGH_1");
-            //    e.LoadFromModFile<Texture2D>("assets/CustomGH_1.png", AssetLoadPriority.Medium);
-            //}
-
-            //if (e.Name.IsEquivalentTo("Buildings/GreenhouseUp2"))
-            //{
-            //    Console.WriteLine("Loading CustomGH_2");
-            //    e.LoadFromModFile<Texture2D>("assets/CustomGH_2.png", AssetLoadPriority.Medium);
-            //}
-
             if (e.NameWithoutLocale.IsEquivalentTo("Data/Buildings"))
             {
                 e.Edit(delegate (IAssetData data)

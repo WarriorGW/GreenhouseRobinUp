@@ -14,28 +14,8 @@ namespace TheWarriorGW.GreenhouseRobinUp
             return greenhouse.modData.TryGetValue(ModDataKey, out string level)
                ? int.Parse(level)
                : 0;
-            // Si modData contiene el valor de "GreenhouseRobinUp.GreenLevel"
-            //if (greenhouse.modData.TryGetValue(ModDataKey, out string level))
-            //{
-            //    if (int.TryParse(level, out int parsedLevel))
-            //    {
-            //        Console.WriteLine($"Greenhouse level found in ModData from GetUpgradeLevel(): {parsedLevel}");
-            //        return parsedLevel; // Retorna el valor correctamente parseado
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine($"Invalid Greenhouse level in ModData: {level}. Returning default level 0.");
-            //        return 0; // Si el valor no es un número válido, regresa el nivel por defecto (0)
-            //    }
-            //}
-            //else
-            //{
-            //    // Si no existe el ModData, posiblemente la *Greenhouse* no ha sido actualizada, así que asignamos nivel 0.
-            //    Console.WriteLine("No Greenhouse level found in ModData. Returning default level 0.");
-            //    return 0;
-            //}
         }
-        public void SetGreenhouseLevel(int level)
+        public void SetUpgradeLevel(int level)
         {
             var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
             gh.modData[ModDataKey] = level.ToString();
@@ -52,15 +32,8 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 gh.buildingType.Set("Greenhouse");
                 Monitor.Log($"Updated building type: {gh.buildingType.Value}");
                 Monitor.Log($"Level post-change: {GetUpgradeLevel(gh)}", LogLevel.Debug);
-                SetGreenhouseLevel(ghLevel);
+                SetUpgradeLevel(ghLevel);
                 Monitor.Log($"Level post manual modify: {GetUpgradeLevel(gh)}", LogLevel.Debug);
-            }
-        }
-        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
-        {
-            if (e.OldMenu is CarpenterMenu)
-            {
-                FixGreenhouseType("OnMenuChanged");
             }
         }
         private void OnDayStarting(object sender, DayStartedEventArgs e)
