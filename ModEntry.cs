@@ -33,6 +33,7 @@ namespace TheWarriorGW.GreenhouseRobinUp
             helper.ConsoleCommands.Add("ghruget", "Returns current size of the Greenhouse.\n\nUsage: ghruget", GetGHLevel);
             helper.ConsoleCommands.Add("reloadgh", "Reloads Greenhouse data.\n\nUsage: reloadgh", ReloadGH);
             helper.ConsoleCommands.Add("printgh", "Prints the info of all Greenhouses.\n\nUsage: printgh", PrintGH);
+            helper.ConsoleCommands.Add("movetrees", "Instantly moves the trees inside the Greenhouse.\n\nUsage: movetrees", MoveTrees);
 
             // Loads basic data
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;

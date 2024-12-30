@@ -9,8 +9,8 @@ namespace TheWarriorGW.GreenhouseRobinUp
         private void SetGHLevel(string command, string[] args)
         {
             SetUpgradeLevel(int.Parse(args[0]));
-
         }
+
         private void GetGHLevel(string command, string[] args)
         {
             var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
@@ -22,13 +22,18 @@ namespace TheWarriorGW.GreenhouseRobinUp
         {
             if (!Context.IsWorldReady) return;
             Helper.GameContent.InvalidateCache("Maps/Greenhouse");
-            Helper.GameContent.InvalidateCache("Maps/Greenhouse");
             Monitor.Log($"Reloaded", LogLevel.Info);
         }
 
         private void PrintGH(string command, string[] args)
         {
             VerifyGreenhouseUpgrades();
+        }
+
+        // Funcion para mover los arboles
+        private void MoveTrees(string command, string[] args)
+        {
+            MoveTrees();
         }
     }
 }

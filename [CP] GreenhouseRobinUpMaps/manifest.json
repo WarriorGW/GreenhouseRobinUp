@@ -1,7 +1,7 @@
 {
     "Name": "[CP] GreenhouseRobinUp",
     "Author": "TheWarriorGW",
-    "Version": "1.0.0",
+    "Version": "1.2.0",
     "Description": "Assets for the Greenhouse Robin Upgrades.",
     "UniqueID": "TheWarriorGW.GreenhouseRobinUpCP",
     "UpdateKeys": [ "Nexus:30219" ],

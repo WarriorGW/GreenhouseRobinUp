@@ -1,7 +1,7 @@
 {
     "Name": "Upgrade Greenhouse with Robin",
     "Author": "TheWarriorGW",
-    "Version": "1.0.0",
+    "Version": "1.2.0",
     "Description": "This mod will let you upgrade your greenhouse with Robin",
     "UniqueID": "TheWarriorGW.GreenhouseRobinUp",
     "EntryDll": "GreenhouseRobinUp.dll",
