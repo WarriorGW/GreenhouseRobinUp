@@ -2,11 +2,15 @@
 {
     public enum IDMaterials
     {
-        Hardwood = 709,
         Clay = 330,
+        CopperBar = 334,
         IronBar = 335,
         GoldBar = 336,
-        IridiumBar = 337
+        IridiumBar = 337,
+        RefinedQuartz = 338,
+        Wood = 388,
+        Stone = 390,
+        Hardwood = 709,
     }
     class ModConfig
     {
