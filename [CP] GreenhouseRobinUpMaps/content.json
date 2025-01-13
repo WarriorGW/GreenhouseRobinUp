@@ -1,13 +1,20 @@
 {
     "Format": "2.4.0",
+    "DynamicTokens": [
+        {
+            "Name": "ghlevel",
+            "Value": "{{TheWarriorGW.GreenhouseRobinUp/GreenHouseLevel}}"
+        }
+    ],
     "Changes": [
         {
             "Action": "Load",
             "Target": "Maps/Greenhouse",
-            "FromFile": "assets/Greenhouse_{{TheWarriorGW.GreenhouseRobinUp/GreenHouseLevel}}.tmx",
+            "FromFile": "assets/Greenhouse_{{ghlevel}}.tmx",
             "When": {
-                "query: {{TheWarriorGW.GreenhouseRobinUp/GreenHouseLevel}} >= 0": true
-            }
+                "query: {{ghlevel}} >= 0": true
+            }//,
+            //"Update": "OnLocationChange"
         }
     ]
 }
