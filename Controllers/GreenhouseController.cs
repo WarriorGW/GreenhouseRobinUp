@@ -21,6 +21,8 @@ namespace TheWarriorGW.GreenhouseRobinUp
             var gh = Game1.getFarm().buildings.OfType<GreenhouseBuilding>().FirstOrDefault();
             gh.modData[ModDataKey] = level.ToString();
             Monitor.Log($"Greenhouse is now level {level}.", LogLevel.Info);
+            Monitor.Log($"Moving trees...", LogLevel.Debug);
+            MoveTrees();
         }
         private void MoveTrees()
         {
@@ -173,7 +175,6 @@ namespace TheWarriorGW.GreenhouseRobinUp
         private void OnDayStarting(object sender, DayStartedEventArgs e)
         {
             FixGreenhouseType("OnDayStarting");
-            //MoveTrees();
         }
         private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
@@ -183,7 +184,6 @@ namespace TheWarriorGW.GreenhouseRobinUp
         internal void OnLoad(object sender, SaveLoadedEventArgs e)
         {
             FixGreenhouseType("OnLoad");
-            //MoveTrees();
         }
 
         internal void OnSaveCompleted(object sender, SavedEventArgs e)
@@ -194,7 +194,6 @@ namespace TheWarriorGW.GreenhouseRobinUp
         internal void OnSaving(object sender, SavingEventArgs e)
         {
             FixGreenhouseType("OnSaving");
-            //MoveTrees();
         }
     }
 }
