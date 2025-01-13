@@ -27,7 +27,6 @@
                 (new MaterialSlot(IDMaterials.GoldBar, 100)),
                 (new MaterialSlot(IDMaterials.IridiumBar, 50)),
                 3)
-
         };
     }
 

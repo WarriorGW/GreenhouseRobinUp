@@ -4,11 +4,23 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Buildings;
 using StardewValley;
 using TheWarriorGW.GreenhouseRobinUp.Data;
+using StardewValley.ItemTypeDefinitions;
+using StardewModdingAPI;
 
 namespace TheWarriorGW.GreenhouseRobinUp
 {
     partial class ModEntry
     {
+        private string GetMaterialName(IDMaterials material)
+        {
+            int materialID = (int)material; // Convierte el enum al ID numérico.
+            ParsedItemData? data = ItemRegistry.GetData($"(O){materialID}");
+            if (data != null)
+            {
+                return data.DisplayName; // Devuelve el nombre localizado.
+            }
+            return materialID.ToString(); // Devuelve el ID como fallback.
+        }
         private void LoadModConfigMenu()
         {
             // API GenericModConfig
@@ -38,6 +50,7 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 mod: this.ModManifest,
                 name: () => I18n.Config_Slot_Material(1),
                 allowedValues: Enum.GetNames(typeof(IDMaterials)),
+                formatAllowedValue: (value)=>GetMaterialName((IDMaterials)Enum.Parse(typeof(IDMaterials), value)),
                 getValue: () => this.Config.UpgradeMaterials[1].Slot1.MaterialID.ToString(),
                 setValue: value => this.Config.UpgradeMaterials[1].Slot1.MaterialID = (IDMaterials)Enum.Parse(typeof(IDMaterials), value)
             );
@@ -51,6 +64,7 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 mod: this.ModManifest,
                 name: () => I18n.Config_Slot_Material(2),
                 allowedValues: Enum.GetNames(typeof(IDMaterials)),
+                formatAllowedValue: (value) => GetMaterialName((IDMaterials)Enum.Parse(typeof(IDMaterials), value)),
                 getValue: () => this.Config.UpgradeMaterials[1].Slot2.MaterialID.ToString(),
                 setValue: value => this.Config.UpgradeMaterials[1].Slot2.MaterialID = (IDMaterials)Enum.Parse(typeof(IDMaterials), value)
             );
@@ -64,6 +78,7 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 mod: this.ModManifest,
                 name: () => I18n.Config_Slot_Material(3),
                 allowedValues: Enum.GetNames(typeof(IDMaterials)),
+                formatAllowedValue: (value) => GetMaterialName((IDMaterials)Enum.Parse(typeof(IDMaterials), value)),
                 getValue: () => this.Config.UpgradeMaterials[1].Slot3.MaterialID.ToString(),
                 setValue: value => this.Config.UpgradeMaterials[1].Slot3.MaterialID = (IDMaterials)Enum.Parse(typeof(IDMaterials), value)
             );
@@ -95,6 +110,7 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 name: () => I18n.Config_Slot_Material(1),
                 allowedValues: Enum.GetNames(typeof(IDMaterials)),
                 getValue: () => this.Config.UpgradeMaterials[2].Slot1.MaterialID.ToString(),
+                formatAllowedValue: (value) => GetMaterialName((IDMaterials)Enum.Parse(typeof(IDMaterials), value)),
                 setValue: value => this.Config.UpgradeMaterials[2].Slot1.MaterialID = (IDMaterials)Enum.Parse(typeof(IDMaterials), value)
             );
             configMenu.AddNumberOption(
@@ -107,6 +123,7 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 mod: this.ModManifest,
                 name: () => I18n.Config_Slot_Material(2),
                 allowedValues: Enum.GetNames(typeof(IDMaterials)),
+                formatAllowedValue: (value) => GetMaterialName((IDMaterials)Enum.Parse(typeof(IDMaterials), value)),
                 getValue: () => this.Config.UpgradeMaterials[2].Slot2.MaterialID.ToString(),
                 setValue: value => this.Config.UpgradeMaterials[2].Slot2.MaterialID = (IDMaterials)Enum.Parse(typeof(IDMaterials), value)
             );
@@ -120,6 +137,7 @@ namespace TheWarriorGW.GreenhouseRobinUp
                 mod: this.ModManifest,
                 name: () => I18n.Config_Slot_Material(3),
                 allowedValues: Enum.GetNames(typeof(IDMaterials)),
+                formatAllowedValue: (value) => GetMaterialName((IDMaterials)Enum.Parse(typeof(IDMaterials), value)),
                 getValue: () => this.Config.UpgradeMaterials[2].Slot3.MaterialID.ToString(),
                 setValue: value => this.Config.UpgradeMaterials[2].Slot3.MaterialID = (IDMaterials)Enum.Parse(typeof(IDMaterials), value)
             );
